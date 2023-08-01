@@ -16,6 +16,10 @@ Apply migrations to your database
 ```
 python manage.py migrate
 ```
+
+```
+python manage.py makemigrations
+```
 To run the development server:
 ```
 python manage.py runserver
