@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<button type="submit"><a href="{% url 'create_expense' %}"><h2>Create Expense</h2></a></button>
+<br>
+<h2>Your Expenses:-</h2>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Category</th>
+    <th>Date of Expense</th>
+    <th>Amount</th>
+    <th>Updated At</th>
+    <th>Created by</th>
+    <th></th>
+  </tr>
+  {% for exp_item in expenses %}
+  <tr>
+    <td>{{ exp_item.name }}</td>
+    <td>{{ exp_item.category}}</td>
+    <td>{{ exp_item.date_of_expense}}</td>
+    <td>INR {{ exp_item.amount }}</td>
+    <td>{{ exp_item.updated_at}}</td>
+    <td>{{ exp_item.created_by}}</td>
+    <td>
+      {% if exp_item.created_by == request.user or request.user.is_superuser %}
+              <a method="POST" href="{% url 'update_expense' exp_item.id %}">Update</a>
+              <form method="post" action="{% url 'delete_expense' exp_item.id %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit">Delete</button>
+              </form>
+            {% else %}
+              <!-- Display some message here if you want to restrict edit/delete access -->
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+  
+{% endblock %}
